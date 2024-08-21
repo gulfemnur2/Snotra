@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layouts/defaultLayout" lang="en">
+<head>
+    <title>Kullanıcı Profili</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .container {
+            padding: 20px;
+        }
+
+        .profile-info, .borrowed-book-info {
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            background-color: #fff;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .profile-info h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .borrowed-book-info h4 {
+            font-size: 1.2em;
+        }
+
+        .book-title {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+    <div th:if="${kullanici == null}">
+        <p>Kullanıcı bilgileri bulunamadı.</p>
+    </div>
+
+    <div class="profile-info card" th:if="${kullanici != null}">
+        <div class="card-body">
+            <h4 class="card-title">Kullanıcı Bilgileri</h4>
+            <p>Ad: <span th:text="${kullanici.ad}"></span></p>
+            <p>Soyad: <span th:text="${kullanici.soyad}"></span></p>
+            <p>Kullanıcı Adı: <span th:text="${kullanici.kullaniciAdi}"></span></p>
+        </div>
+    </div>
+
+    <div class="borrowed-book-info card" th:if="${kullanici.oduncKitap != null and kullanici.oduncKitap != ''}">
+        <div class="card-body">
+            <h4>Ödünç Alınan Kitap</h4>
+            <p>
+                <span class="book-title" th:text="${kullanici.oduncKitap}"></span>
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layouts/defaultLayout" lang="en">
+<head>
+    <title>Kullanıcı Profili</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .container {
+            padding: 20px;
+        }
+
+        .profile-info, .borrowed-book-info {
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            background-color: #fff;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .profile-info h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .borrowed-book-info h4 {
+            font-size: 1.2em;
+        }
+
+        .book-title {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .btn-group {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .message.info {
+            background-color: #cce5ff;
+            color: #004085;
+        }
+    </style>
+    <script>
+        function confirmDeleteProfile(event) {
+            if (!confirm("Bu profili silmek istediğinizden emin misiniz?")) {
+                event.preventDefault();
+            }
+        }
+    </script>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+    <h2 th:text="'Hoşgeldin, ' + ${kullanici.ad} + ' ' + ${kullanici.soyad}"></h2>
+    <div class="profile-info" th:if="${kullanici != null}">
+        <h5 class="card-title">Kullanıcı Bilgileri</h5>
+        <p>Email: <span th:text="${kullanici.email}"></span></p>
+        <p>Ad: <span th:text="${kullanici.ad}"></span></p>
+        <p>Soyad: <span th:text="${kullanici.soyad}"></span></p>
+        <p>Kullanıcı Adı: <span th:text="${kullanici.kullaniciAdi}"></span></p>
+        <div class="btn-group">
+            <a th:href="@{/orders/public/editUser/{id}(id=${kullanici.id})}" class="btn btn-primary btn-lg">Profili Düzenle</a>
+            <form th:action="@{/orders/public/deleteUser/}" method="post" style="display:inline;" onsubmit="confirmDeleteProfile(event)">
+                <input type="hidden" name="id" th:value="${kullanici.id}"/>
+                <button type="submit" class="btn btn-danger btn-lg">Profili Sil</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="borrowed-book-info" th:if="${kullanici.oduncKitap != null}">
+        <h4>Ödünç Alınan Kitap</h4>
+        <p>
+            <span class="book-title" th:text="${kullanici.oduncKitap}"></span>
+        </p>
+        <p>
+            <span th:text="'Ödünç Alma Tarihi: ' + ${kullanici.oduncAlmaTarihi}"></span>
+        </p>
+        <p th:if="${oduncSuresiGecti}">
+            <span class="text-danger">Ödünç süresi doldu!</span>
+        </p>
+        <p th:if="${!oduncSuresiGecti}">
+            <span th:text="'Kalan Süre: ' + ${kalanGun} + ' gün'"></span>
+        </p>
+        <div>
+            <a th:href="@{/orders/public/return/{id}(id=${kullanici.oduncId})}" class="btn btn-primary">Kitabı Teslim Et</a>
+        </div>
+    </div>
+
+    <div class="message" th:if="${message != null}">
+        <div th:class="'message ' + ${messageType}">
+            <span th:text="${message}"></span>
+        </div>
+    </div>
+</div>
+</body>
+</html>

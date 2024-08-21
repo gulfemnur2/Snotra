@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Header</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div th:fragment="header">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/orders/public/">SNOTRA</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/orders/public/">Tüm Kitaplar <span class="sr-only">(current)</span></a>
+                </li>
+                <div class="divider" th:if="${session.admin != null}"></div>
+                <li class="nav-item" th:if="${session.admin != null}">
+                    <a class="nav-link" href="/orders/form">Ekle</a>
+                </li>
+                <div class="divider" th:if="${session.admin != null}"></div>
+                <li class="nav-item" th:if="${session.admin != null}">
+                    <a class="nav-link" href="/orders/admin/">Admin</a>
+                </li>
+                <div class="divider"></div>
+                <li class="nav-item">
+                    <a class="nav-link" href="/orders/public/showSearchUser">Kullanıcı Ara</a>
+                </li>
+                <div class="divider"></div>
+                <li class="nav-item">
+                    <a class="nav-link" href="/orders/public/users">Tüm Kullanıcılar</a>
+                </li>
+            </ul>
+            <form th:action="@{/orders/public/search}" method="post" th:object="${searchModel}" class="form-inline">
+                <input type="text" th:field="*{searchTerm}" class="form-control mr-2" placeholder="Kitap ara..." />
+                <button type="submit" class="btn btn-primary">Ara</button>
+            </form>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item" th:if="${session.user == null && session.admin == null}" id="register">
+                    <a class="nav-link" href="/orders/public/userForm">Kayıt Ol</a>
+                </li>
+                <li class="nav-item" th:if="${session.user == null && session.admin == null}" id="login">
+                    <a class="nav-link" href="/orders/public/loginForm">Giriş Yap</a>
+                </li>
+                <li class="nav-item" th:if="${session.user != null}">
+                    <a class="nav-link" th:href="@{/orders/public/profile/{id}(id=${session.user.id})}">Profil</a>
+                </li>
+                <li class="nav-item" th:if="${session.user != null || session.admin != null}">
+                    <a class="nav-link" href="/orders/public/logout">Çıkış Yap</a>
+                </li>
+            </ul>
+        </div>
+        <div class="dropdown-divider"></div>
+    </nav>
+</div>
+</body>
+</html>

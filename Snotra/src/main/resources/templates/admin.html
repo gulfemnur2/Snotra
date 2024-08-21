@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layouts/defaultLayout" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kitap Listesi</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .container {
+            padding-right: 10px;
+            padding-left: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .book {
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            width: calc(20% - 20px);
+            background-color: white;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+
+        .book .title {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-top: 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .book .author,
+        .book .page {
+            margin-top: 2px;
+            font-size: 1em;
+            color: #666;
+        }
+
+        .book img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+            border-radius: 5px;
+            max-height: 360px;
+        }
+        .form-container {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .form-container form {
+            display: inline-block;
+        }
+    </style>
+    <script>
+        function confirmDelete(event) {
+            if (!confirm("Bu kitabı silmek istediğinizden emin misiniz?")) {
+                event.preventDefault();
+            }
+        }
+    </script>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+    <div th:each="kitap : ${kitaplar}" class="book">
+        <img th:src="@{${kitap.kapak}}" alt="Kapak"/>
+        <p class="title"><span th:text="${kitap.baslik}"></span></p>
+        <p class="author">Yazar: <span th:text="${kitap.yazar}"></span></p>
+        <p class="page">Sayfa sayısı: <span th:text="${kitap.sayfa}"></span></p>
+        <div class="form-container">
+            <form th:action="@{/orders/admin/editForm/{id}(id=${kitap.id})}" th:object="${kitap}" method="get">
+                <input name="id" type="hidden" th:value="${kitap.id}">
+                <input name="baslik" type="hidden" th:value="${kitap.baslik}">
+                <input name="yazar" type="hidden" th:value="${kitap.yazar}">
+                <input name="sayfa" type="hidden" th:value="${kitap.sayfa}">
+                <button class="btn btn-primary" type="submit" name="editItem">Düzenle</button>
+            </form>
+            <form th:action="@{/orders/admin/delete/}" th:object="${kitap}" method="post" onsubmit="confirmDelete(event)">
+                <input name="id" type="hidden" th:value="${kitap.id}">
+                <input name="baslik" type="hidden" th:value="${kitap.baslik}">
+                <input name="yazar" type="hidden" th:value="${kitap.yazar}">
+                <input name="sayfa" type="hidden" th:value="${kitap.sayfa}">
+                <button class="btn btn-danger" type="submit" name="deleteItem">Sil</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

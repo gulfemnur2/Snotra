@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layouts/defaultLayout" lang="en">
+<head>
+    <title>Kitap Detayları</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+            width: 100%;
+            justify-content: center;
+            position: relative;
+        }
+
+        .book {
+            display: flex;
+            align-items: flex-start;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            background-color: #fff;
+            padding: 10px;
+            width: 100%;
+            max-height: max-content;
+            position: relative;
+        }
+
+        .book img {
+            max-width: 300px;
+            max-height: 430px;
+            border-radius: 5px;
+            margin-right: 20px;
+        }
+
+        .kitap-details {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .book .title {
+            font-weight: bold;
+            font-size: 1.5em;
+            margin-top: 10px;
+        }
+
+        .book .author,
+        .book .page,
+        .book .category,
+        .book .publisher,
+        .book .publishYear,
+        .description {
+            margin-top: 5px;
+            color: #666;
+        }
+
+        .description {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            margin-top: 10px;
+            margin-left: 20px;
+            margin-right: 20px;
+            font-size: 0.9em;
+            color: #333;
+        }
+
+        .book .can-be-borrowed {
+            color: green;
+            font-weight: bold;
+        }
+
+        .book .borrowed {
+            color: red;
+            font-weight: bold;
+        }
+
+        #send {
+            max-width: 200px;
+            margin-right: 450px;
+            margin-left: 450px;
+        }
+
+        .user-comment {
+            width: 100%;
+            margin-top: 20px;
+            border-top: 1px solid #dee2e6;
+            padding-top: 20px;
+        }
+
+        .comment-form {
+            width: 100%;
+            margin-top: 20px;
+            border-top: 1px solid #dee2e6;
+            padding-top: 20px;
+        }
+
+        .comment-form label {
+            font-weight: bold;
+        }
+
+        .comment-form textarea {
+            resize: none;
+        }
+
+        .all-comments {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            margin-top: 20px;
+            padding-top: 20px;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+    <div th:if="${kitap != null}" class="book">
+        <img th:src="${kitap.kapak}" alt="Kapak" />
+        <div class="kitap-details">
+            <p class="title">
+                <span th:text="${kitap.baslik}"></span>
+                <span style="float: right; font-weight: normal; font-size: 1em; color: #666;" th:if="${kitap.ort != null}">Puan:
+                    <span th:text="${kitap.ort}"></span>
+                </span>
+            </p>
+            <p class="author">Yazar: <span th:text="${kitap.yazar}"></span></p>
+            <p class="page">Sayfa sayısı: <span th:text="${kitap.sayfa}"></span></p>
+            <p class="category">Kategori: <span th:text="${kitap.kategori}"></span></p>
+            <p class="publisher">Yayınevi: <span th:text="${kitap.yayinevi}"></span></p>
+            <p class="publishYear">Basım Yılı: <span th:text="${kitap.basimYili}"></span></p>
+            <p class="can-be-borrowed" th:if="${!kitap.odunc}">Ödünç Alınabilir
+                <div th:if="${!kitap.odunc}">
+                    <a th:href="@{/orders/public/borrow/{id}(id=${kitap.id})}" class="btn btn-primary" id="odunc">Ödünç Al</a>
+                </div>
+            </p>
+            <p class="borrowed" th:if="${kitap.odunc}">
+                <span th:text="${kitap.oduncAlanKullanici}"></span> tarafından ödünç alındı
+            </p>
+            <div th:if="${message}" th:class="'message ' + ${messageType}" th:text="${message}" class="mt-3"></div>
+        </div>
+    </div>
+    <div th:if="${kitap != null}" class="description">
+        <p><strong>Açıklama:</strong> <span th:text="${kitap.aciklama}"></span></p>
+    </div>
+
+    <div th:if="${kullaniciYorumu != null}" class="user-comment">
+        <h4>Yorumunuz</h4>
+        <p><strong>Puan: </strong><span th:text="${kullaniciYorumu.puan}"></span></p>
+        <p th:text="${kullaniciYorumu.yorum}"></p>
+
+        <div class="button-container">
+            <form th:action="@{/orders/public/comment/edit/{id} (id=${kullaniciYorumu.id})}" method="get">
+                <input type="hidden" name="id" th:value="${kullaniciYorumu.id}" />
+                <button type="submit" class="btn btn-primary">Düzenle</button>
+            </form>
+
+            <form th:action="@{/orders/public/comment/delete}" method="post" onsubmit="return confirm('Yorumunuzu silmek istediğinize emin misiniz?');">
+                <input type="hidden" name="id" th:value="${kullaniciYorumu.id}" />
+                <input type="hidden" name="kitapId" th:value="${kullaniciYorumu.kitapId}" />
+                <button type="submit" class="btn btn-danger">Sil</button>
+            </form>
+        </div>
+    </div>
+
+    <div th:if="${kullaniciYorumu == null}">
+        <h4>Yorum Ekle</h4>
+        <form class="comment-form" th:action="@{/orders/public/comment}" method="post">
+            <input type="hidden" name="kitapId" th:value="${kitap.id}">
+            <div class="form-group">
+                <label for="yorum">Yorumunuz</label>
+                <textarea class="form-control" id="yorum" name="yorum" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="puan">Puan</label>
+                <select class="form-control" id="puan" name="puan" required>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary" id="send">Gönder</button>
+        </form>
+    </div>
+
+    <div class="all-comments">
+        <h4>Tüm Yorumlar</h4>
+        <a th:href="@{/orders/public/book/{kitapId}/comments(kitapId=${kitap.id})}" class="btn btn-secondary">
+            Tüm Yorumları Görüntüle
+        </a>
+    </div>
+</div>
+</body>
+</html>

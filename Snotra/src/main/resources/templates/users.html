@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/defaultLayout" lang="en">
+<head>
+    <title>Kullanıcılar</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .container {
+            padding-right: 10px;
+            padding-left: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .user {
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            width: 250px;
+            height: 200px;
+            background-color: white;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+
+        .user .nickname {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+
+        .user .name,
+        .user .email {
+            margin-top: 2px;
+            font-size: 1em;
+            color: #666;
+        }
+
+        .btn-group {
+            margin-top: 10px;
+        }
+
+        .btn-group .btn {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+    <div th:each="kullanici : ${kullanici}" class="user">
+        <p class="nickname"><span th:text="${kullanici.kullaniciAdi}"></span></p>
+        <p class="name">
+            <span th:text="${kullanici.ad}"></span>
+            <span> </span>
+            <span th:text="${kullanici.soyad}"></span>
+        </p>
+        <p class="email"><span th:text="${kullanici.email}"></span></p>
+        <div class="btn-group">
+            <a th:href="@{/orders/public/showProfile/{id}(id=${kullanici.id})}" class="btn btn-primary">Profil Görüntüle</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

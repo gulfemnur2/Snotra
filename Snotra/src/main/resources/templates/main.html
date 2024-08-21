@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/defaultLayout" lang="en">
+<head>
+    <title>Ana Sayfa</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .book {
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: white;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            max-height: 347px;
+            max-width: 182px;
+        }
+
+        .book .title {
+            font-size: 1em;
+            font-weight: bold;
+            margin: 3px 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .book .author,
+        .book .page {
+            font-size: 0.8em;
+            margin: 2px 0;
+        }
+
+        .book .avg {
+            font-size: 0.8em;
+            color: #666;
+            margin: 2px 0;
+        }
+
+        .book img {
+            width: 70%;
+            height: auto;
+            margin: 0 auto 10px;
+            border-radius: 5px;
+            max-height: 360px;
+        }
+
+        .book p {
+            margin: 3px 0;
+        }
+
+        .btn {
+            margin-top: auto;
+        }
+
+        .filter-sort-controls {
+            margin-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 100px;
+        }
+
+        .filter-sort-controls form {
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 120px;
+            gap: 2px;
+        }
+
+        .filter-sort-controls form input,
+        .filter-sort-controls form select,
+        .filter-sort-controls form button {
+            font-size: 0.7em;
+            padding: 1px;
+        }
+
+        .filter-sort-controls label {
+            font-size: 0.7em;
+            margin-bottom: 1px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .col-md-3 {
+            flex: 1 1 calc(18% - 8px);
+            box-sizing: border-box;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 0.85em;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="filter-sort-controls">
+            <form th:action="@{/orders/public/filter}" method="get">
+                <label for="kategori">Kategori:</label>
+                <select class="form-control" id="kategori" name="kategori">
+                    <option value="">Kategori Seçiniz</option>
+                    <option value="Bilim-Kurgu">Bilim-Kurgu</option>
+                    <option value="Fantastik">Fantastik</option>
+                    <option value="Macera">Macera</option>
+                    <option value="Dram">Dram</option>
+                    <option value="Polisiye">Polisiye</option>
+                    <option value="Tarih">Tarih</option>
+                </select>
+                <button type="submit" class="btn btn-secondary">Filtrele</button>
+            </form>
+
+            <form th:action="@{/orders/public/filterPage}" method="get">
+                <label for="minPage">Alt Limit:</label>
+                <input type="number" id="minPage" name="minPage" class="form-control" placeholder="Min">
+                <label for="maxPage">Üst Limit:</label>
+                <input type="number" id="maxPage" name="maxPage" class="form-control" placeholder="Max">
+                <button type="submit" class="btn btn-secondary">Filtrele</button>
+            </form>
+
+            <form th:action="@{/orders/public/sort}" method="get">
+                <label for="sortField">Sıralama Alanı:</label>
+                <select id="sortField" name="sortField" class="form-control">
+                    <option value="">Sırala</option>
+                    <option value="baslik">Başlık</option>
+                    <option value="basimYili">Basım Yılı</option>
+                    <option value="ort">Puan</option>
+                    <option value="sayfa">Sayfa Sayısı</option>
+                </select>
+                <label for="sortDirection">Yön:</label>
+                <select id="sortDirection" name="sortDirection" class="form-control">
+                    <option value="asc">Artan</option>
+                    <option value="desc">Azalan</option>
+                </select>
+                <button type="submit" class="btn btn-secondary">Sırala</button>
+            </form>
+        </div>
+
+        <div th:if="${error}" class="error-message">
+            <p th:text="${error}"></p>
+        </div>
+
+        <div class="row">
+            <div th:each="kitap : ${kitaplar}" class="col-md-3">
+                <div class="book">
+                    <img th:src="@{${kitap.kapak}}" alt="Kapak" />
+                    <p class="avg" th:if="${kitap.ort}">Puan: <span th:text="${kitap.ort}"></span></p>
+                    <p class="title"><span th:text="${kitap.baslik}"></span></p>
+                    <p class="author"><span th:text="${kitap.yazar}"></span></p>
+                    <p class="page">Sayfa sayısı: <span th:text="${kitap.sayfa}"></span></p>
+                    <form th:action="@{/orders/public/book/{id} (id=${kitap.id})}" method="post">
+                        <input type="hidden" th:name="id" th:value="${kitap.id}">
+                        <button class="btn btn-primary" type="submit">Detaylar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

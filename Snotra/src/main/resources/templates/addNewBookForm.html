@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layouts/defaultLayout" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kitap Ekleme</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .custom-label {
+      min-width: 120px;
+    }
+    .form-control {
+      max-width: 300px;
+    }
+  </style>
+</head>
+<body>
+<br>
+<div layout:fragment="content" class="container">
+
+  <form th:action="@{/orders/admin/addNew}" method="post" enctype="multipart/form-data" th:object="${order}">
+    <div class="form-group row">
+      <label for="baslik" class="col-sm-2 col-form-label custom-label">Başlık:</label>
+      <div class="col-sm-10">
+        <input th:field="*{baslik}" type="text" class="form-control" id="baslik" aria-describedby="baslikHelp">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="yazar" class="col-sm-2 col-form-label custom-label">Yazar:</label>
+      <div class="col-sm-10">
+        <input th:field="*{yazar}" type="text" class="form-control" id="yazar" aria-describedby="yazarHelp">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="kategori" class="col-sm-2 col-form-label custom-label">Kategori:</label>
+      <div class="col-sm-10">
+        <select th:field="*{kategori}" class="form-control" id="kategori">
+          <option value="">Kategori Seçiniz</option>
+          <option value="Bilim-Kurgu">Bilim-Kurgu</option>
+          <option value="Fantastik">Fantastik</option>
+          <option value="Macera">Macera</option>
+          <option value="Dram">Dram</option>
+          <option value="Polisiye">Polisiye</option>
+          <option value="Tarih">Tarih</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="sayfa" class="col-sm-2 col-form-label custom-label">Sayfa Sayısı:</label>
+      <div class="col-sm-10">
+        <input th:field="*{sayfa}" type="number" class="form-control" id="sayfa" aria-describedby="sayfaHelp">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="aciklama" class="col-sm-2 col-form-label custom-label">Açıklama:</label>
+      <div class="col-sm-10">
+        <textarea th:field="*{aciklama}" class="form-control" id="aciklama" aria-describedby="aciklamaHelp"></textarea>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="yayinevi" class="col-sm-2 col-form-label custom-label">Yayın Evi:</label>
+      <div class="col-sm-10">
+        <input th:field="*{yayinevi}" type="text" class="form-control" id="yayinevi" aria-describedby="yayineviHelp">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="basim_yili" class="col-sm-2 col-form-label custom-label">Basım Yılı:</label>
+      <div class="col-sm-10">
+        <input th:field="*{basimYili}" type="number" class="form-control" id="basim_yili" aria-describedby="basim_yiliHelp">
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-sm-2"></div>
+      <div class="col-sm-10">
+        <button type="submit" class="btn btn-primary">Ekle</button>
+      </div>
+    </div>
+  </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Default Layout</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            padding: 0 10px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            flex: 1;
+        }
+
+        .navbar-nav {
+            margin-left: auto;
+        }
+
+        .navbar-brand {
+            color: #007bff !important;
+            font-weight: bold;
+        }
+
+        #register {
+            background-color: #28a745;
+            border-radius: 5px;
+            margin-left: 5px;
+        }
+
+        #login {
+            background-color: #007bff;
+            border-radius: 5px;
+            margin-left: 5px;
+        }
+
+        #register a {
+            color: white;
+            transition: background-color 0.3s ease, border-radius 0.3s ease;
+        }
+
+        #register a:hover {
+            background-color: #217537;
+            border-radius: 5px;
+        }
+
+        #login a {
+            color: white;
+            transition: background-color 0.3s ease, border-radius 0.3s ease;
+        }
+
+        #login a:hover {
+            background-color: #004793;
+            border-radius: 5px;
+        }
+
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .footer {
+            background-color: #f8f9fa;
+            padding: 10px;
+            text-align: center;
+        }
+        .message {
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .divider {
+            width: 1px;
+            background-color: #ccc;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{layouts/commonHeader.html :: header}"></div>
+
+<div layout:fragment="content" class="content container"></div>
+
+<div th:replace="~{layouts/commonFooter.html :: footer}" class="footer"></div>
+</body>
+</html>

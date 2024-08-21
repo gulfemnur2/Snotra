@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layouts/defaultLayout" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kitap Güncelleme</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .custom-label {
+            min-width: 120px;
+        }
+        .form-control {
+            max-width: 500px;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+    <h1>Kitap Güncelleme</h1>
+    <form th:action="@{/orders/admin/doUpdate}" th:object="${orderModel}" method="post" enctype="multipart/form-data">
+        <input type="hidden" th:field="*{id}">
+
+        <div class="form-group row">
+            <label for="baslik" class="col-sm-2 col-form-label custom-label">Başlık</label>
+            <div class="col-sm-10">
+                <input type="text" id="baslik" class="form-control" th:field="*{baslik}" />
+                <div class="text-danger" th:if="${#fields.hasErrors('baslik')}" th:errors="*{baslik}"></div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="yazar" class="col-sm-2 col-form-label custom-label">Yazar</label>
+            <div class="col-sm-10">
+                <input type="text" id="yazar" class="form-control" th:field="*{yazar}" />
+                <div class="text-danger" th:if="${#fields.hasErrors('yazar')}" th:errors="*{yazar}"></div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="kategori" class="col-sm-2 col-form-label custom-label">Kategori</label>
+            <div class="col-sm-10">
+                <select id="kategori" class="form-control" th:field="*{kategori}">
+                    <option value="">Kategori Seçiniz</option>
+                    <option value="Bilim-Kurgu" th:selected="${orderModel.kategori == 'Bilim-Kurgu'}">Bilim-Kurgu</option>
+                    <option value="Fantastik" th:selected="${orderModel.kategori == 'Fantastik'}">Fantastik</option>
+                    <option value="Macera" th:selected="${orderModel.kategori == 'Macera'}">Macera</option>
+                    <option value="Dram" th:selected="${orderModel.kategori == 'Dram'}">Dram</option>
+                    <option value="Polisiye" th:selected="${orderModel.kategori == 'Polisiye'}">Polisiye</option>
+                    <option value="Tarih" th:selected="${orderModel.kategori == 'Tarih'}">Tarih</option>
+                </select>
+                <div class="text-danger" th:if="${#fields.hasErrors('kategori')}" th:errors="*{kategori}"></div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="sayfa" class="col-sm-2 col-form-label custom-label">Sayfa Sayısı</label>
+            <div class="col-sm-10">
+                <input type="number" id="sayfa" class="form-control" th:field="*{sayfa}" />
+                <div class="text-danger" th:if="${#fields.hasErrors('sayfa')}" th:errors="*{sayfa}"></div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="aciklama" class="col-sm-2 col-form-label custom-label">Açıklama</label>
+            <div class="col-sm-10">
+                <textarea id="aciklama" class="form-control" th:field="*{aciklama}"></textarea>
+                <div class="text-danger" th:if="${#fields.hasErrors('aciklama')}" th:errors="*{aciklama}"></div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="yayinevi" class="col-sm-2 col-form-label custom-label">Yayın Evi</label>
+            <div class="col-sm-10">
+                <input type="text" id="yayinevi" class="form-control" th:field="*{yayinevi}" />
+                <div class="text-danger" th:if="${#fields.hasErrors('yayinevi')}" th:errors="*{yayinevi}"></div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="basim_yili" class="col-sm-2 col-form-label custom-label">Basım Yılı</label>
+            <div class="col-sm-10">
+                <input type="number" id="basim_yili" class="form-control" th:field="*{basimYili}" />
+                <div class="text-danger" th:if="${#fields.hasErrors('basimYili')}" th:errors="*{basimYili}"></div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary">Güncelle</button>
+                <a href="#" th:href="@{/orders/admin/}" class="btn btn-secondary">İptal</a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

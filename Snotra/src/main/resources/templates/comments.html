@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layouts/defaultLayout" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tüm Yorumlar</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .container {
+            margin-top: 20px;
+        }
+
+        .book-detail-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 10px;
+        }
+
+        .book-cover {
+            max-width: 100px;
+            margin-right: 20px;
+        }
+
+        .book-detail {
+            font-size: 0.9em;
+        }
+
+        .btn-primary {
+            margin-bottom: 20px;
+        }
+
+        .comment {
+            border-top: 1px solid #dee2e6;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+
+        .comment strong {
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+    <form th:action="@{/orders/public/book/{id} (id=${kitap.id})}" method="post">
+        <input type="hidden" th:name="id" th:value="${kitap.id}">
+        <button class="btn btn-primary" type="submit">Kitap Detaylarına Geri Dön</button>
+    </form>
+    <div class="book-detail-container">
+        <img th:src="@{${kitap.kapak}}" alt="Kapak" class="book-cover"/>
+        <div class="book-detail">
+            <h4>Kitap Detayları</h4>
+            <br>
+            <p><strong>Başlık: </strong><span th:text="${kitap.baslik}"></span></p>
+            <p><strong>Yazar: </strong><span th:text="${kitap.yazar}"></span></p>
+            <p><strong>Sayfa Sayısı: </strong><span th:text="${kitap.sayfa}"></span></p>
+        </div>
+    </div>
+
+    <h2>Tüm Yorumlar</h2>
+    <div th:each="yorum : ${tumYorumlar}" class="comment">
+        <p><span th:text="${yorum.yorumTarihi}"></span></p>
+        <p><strong>Yorum Yapan: </strong><span th:text="${yorum.yazarAd} + ' ' + ${yorum.yazarSoyad}"></span></p>
+        <p><strong>Puan: </strong><span th:text="${yorum.puan}"></span></p>
+        <p th:text="${yorum.yorum}"></p>
+        <hr/>
+    </div>
+</div>
+</body>
+</html>

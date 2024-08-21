@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layouts/defaultLayout" lang="en">
+<head>
+    <title>Yorum Düzenle</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div layout:fragment="content" class="container">
+    <h2>Yorum Düzenle</h2>
+    <form th:action="@{/orders/public/comment/update}" method="post">
+        <input type="hidden" th:name="id" th:value="${yorum.id}">
+        <input type="hidden" th:name="kitapId" th:value="${yorum.kitapId}">
+        <input type="hidden" th:name="kullaniciId" th:value="${yorum.kullaniciId}">
+        <div class="form-group">
+            <label for="yorum">Yorumunuz</label>
+            <textarea class="form-control" id="yorum" name="yorum" rows="3" required th:text="${yorum.yorum}"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="puan">Puan</label>
+            <select class="form-control" id="puan" name="puan" required>
+                <option th:each="i : ${#numbers.sequence(1, 5)}" th:value="${i}" th:text="${i}" th:selected="${i == yorum.puan}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Güncelle</button>
+    </form>
+</div>
+</body>
+</html>

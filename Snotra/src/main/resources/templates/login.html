@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layouts/defaultLayout" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Giriş Sayfası</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .container {
+            margin-top: 20px;
+        }
+
+        .custom-label {
+            min-width: 120px;
+        }
+
+        .form-control {
+            max-width: 300px;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+    <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}"></div>
+
+    <h4>Kullanıcı Girişi</h4>
+    <form th:action="@{/orders/public/login}" method="post" th:object="${kullanici}">
+        <div class="form-group row">
+            <label for="email" class="col-sm-2 col-form-label custom-label">E-mail:</label>
+            <div class="col-sm-10">
+                <input type="email" id="email" th:field="*{email}" class="form-control" required />
+                <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="sifre" class="col-sm-2 col-form-label custom-label">Şifre:</label>
+            <div class="col-sm-10">
+                <input type="password" id="sifre" th:field="*{sifre}" class="form-control" required />
+                <div th:if="${#fields.hasErrors('sifre')}" th:errors="*{sifre}" class="text-danger"></div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary">Giriş Yap</button>
+            </div>
+        </div>
+    </form>
+
+    <hr>
+
+    <h4>Admin Girişi</h4>
+    <form th:action="@{/orders/public/login}" method="post" th:object="${admin}">
+        <div class="form-group row">
+            <label for="adminEmail" class="col-sm-2 col-form-label custom-label">Admin E-mail:</label>
+            <div class="col-sm-10">
+                <input type="email" id="adminEmail" th:field="*{adminEmail}" class="form-control" required />
+                <div th:if="${#fields.hasErrors('adminEmail')}" th:errors="*{adminEmail}" class="text-danger"></div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="adminSifre" class="col-sm-2 col-form-label custom-label">Admin Şifre:</label>
+            <div class="col-sm-10">
+                <input type="password" id="adminSifre" th:field="*{adminSifre}" class="form-control" required />
+                <div th:if="${#fields.hasErrors('adminSifre')}" th:errors="*{adminSifre}" class="text-danger"></div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary">Admin Girişi</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
